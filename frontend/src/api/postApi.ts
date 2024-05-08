@@ -25,12 +25,16 @@ export const createPost = (
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((res) => {
-    if (res.status !== 200 && res.status !== 201) {
-      return res.json().then((err) => {
-        throw new Error(err.message);
-      });
-    }
-    return res.json();
-  });
+  })
+    .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        return res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
 };
