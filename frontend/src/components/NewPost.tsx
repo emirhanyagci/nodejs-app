@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Dialog,
   DialogContent,
@@ -15,10 +16,10 @@ import { createPost } from "../api/postApi";
 import { useState } from "react";
 export default function NewPost() {
   const [title, setTitle] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState<any>(null);
   const [content, setContent] = useState("");
   async function submitPost() {
-    createPost(title, imageUrl, content)
+    createPost(title, image, content)
       .then((res) => {
         console.log(res);
       })
@@ -52,7 +53,9 @@ export default function NewPost() {
               Image
             </Label>
             <Input
-              onChange={(e) => setImageUrl(e.target.value)}
+              onChange={(e) =>
+                setImage(e.target.files ? e.target.files[0] : null)
+              }
               className=""
               id="newPostImage"
               type="file"

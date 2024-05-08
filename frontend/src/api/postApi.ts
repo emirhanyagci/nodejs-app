@@ -11,20 +11,16 @@ export const getPosts = (): Promise<Post[]> => {
       return res.posts;
     });
 };
-export const createPost = (
-  title: string,
-  imageUrl: string,
-  content: string
-) => {
+export const createPost = (title: string, image: string, content: string) => {
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("image", image);
+  formData.append("content", content);
+  console.log(formData);
+
   return fetch("http://localhost:8080/feed/post", {
     method: "POST",
-    body: JSON.stringify({
-      title,
-      content,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    body: formData,
   })
     .then((res) => {
       if (res.status !== 200 && res.status !== 201) {

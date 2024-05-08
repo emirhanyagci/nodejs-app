@@ -2,8 +2,28 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const bodyParser = require("body-parser");
+const multer = require("multer");
 const app = express();
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 const feedRoutes = require("./routes/feed");
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
@@ -15,11 +35,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(multer({ storage, fileFilter }).single("image"));
 app.use("/feed", feedRoutes);
 app.use((error, req, res, next) => {
   const statusCode = error.statusCode;
   const message = error.message;
-
+  console.log(11, error);
   res.status(statusCode).json({ message });
 });
 mongoose
