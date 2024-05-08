@@ -1,4 +1,6 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -12,4 +14,13 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/feed", feedRoutes);
-app.listen(8080);
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.9thafap.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0`
+  )
+  .then(() => {
+    console.log(process.env.MONGODB_USERNAME);
+
+    app.listen(8080);
+  })
+  .catch((err) => {});

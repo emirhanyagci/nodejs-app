@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon --env-file=.env app.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",

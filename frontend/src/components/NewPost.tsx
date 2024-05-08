@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -29,14 +28,14 @@ export default function NewPost() {
   }
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>New Post</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-2xl">New Post</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="space-y-5">
+        <div className="space-y-5">
           <div className="space-y-2">
             <Label className="text-lg" htmlFor="newPostTitle">
               Title
@@ -69,9 +68,9 @@ export default function NewPost() {
               placeholder="Enter content of post"
             ></Textarea>
           </div>
-        </DialogDescription>
+        </div>
         <DialogFooter className="flex-row justify-end">
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button variant="destructive">Cancel</Button>
           </DialogTrigger>
           <Button onClick={submitPost} variant="ghost">
