@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 exports.getPosts = (req, res, next) => {
   console.log("yep");
   res.json({
@@ -16,9 +17,25 @@ exports.getPosts = (req, res, next) => {
   });
 };
 exports.createPost = (req, res, next) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(422).json({
+      message: "Validation failed,entered data is not valid",
+      errors: error.array(),
+    });
+  }
   const { title, content } = req.body;
+  console.log(title);
   res.status(201).json({
     message: "Post succesfully createt",
-    post: { id: new Date().toISOString(), title, content },
+    post: {
+      id: new Date(),
+      title,
+      content,
+      creator: {
+        name: "Emirhan",
+      },
+      createdAt: new Date(),
+    },
   });
 };
