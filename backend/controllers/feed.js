@@ -3,8 +3,14 @@ exports.getPosts = (req, res, next) => {
   res.json({
     posts: [
       {
+        _id: "1",
         title: "Hello nodejs",
         content: "Nodejs is most common used backend language",
+        imageUrl: "images/duck.jpg",
+        creator: {
+          name: "Emirhan",
+        },
+        createdAt: new Date(),
       },
     ],
   });
