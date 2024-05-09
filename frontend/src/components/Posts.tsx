@@ -11,7 +11,7 @@ export default function Posts() {
     });
   }, []);
   return (
-    <div className="w-full">
+    <div className="w-full space-y-5">
       {posts?.map((post) => {
         return <PostItem key={post._id} post={post} />;
       })}

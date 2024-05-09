@@ -11,6 +11,21 @@ export const getPosts = (): Promise<Post[]> => {
       return res.posts;
     });
 };
+export const getPost = (postId: string) => {
+  return fetch(`http://localhost:8080/feed/post/${postId}`)
+    .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
+
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
 export const createPost = (title: string, image: string, content: string) => {
   const formData = new FormData();
   formData.append("title", title);

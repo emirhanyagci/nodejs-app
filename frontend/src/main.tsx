@@ -9,3 +9,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </React.StrictMode>
 );
 // add validate frontend side
+// add view for post
+// add spinner
+// re fetch after post

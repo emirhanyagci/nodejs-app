@@ -7,7 +7,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 import type { Post } from "@/types/post";
+import { useNavigate } from "react-router-dom";
+
 export default function PostItem({ post }: { post: Post }) {
+  const navigate = useNavigate();
   return (
     <Card className="">
       <CardHeader>
@@ -19,7 +22,14 @@ export default function PostItem({ post }: { post: Post }) {
       </CardHeader>
       <CardFooter className="flex justify-end">
         <div className="space-x-4">
-          <Button variant="ghost">View</Button>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              navigate(`/${post._id}`);
+            }}
+          >
+            View
+          </Button>
           <Button variant="ghost">Edit</Button>
           <Button variant="destructive">Delete</Button>
         </div>
