@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Dialog,
   DialogContent,
@@ -11,30 +10,36 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
-import { createPost } from "../api/postApi";
+import type { Post } from "@/types/post";
 import { useState } from "react";
-export default function NewPost() {
-  const [title, setTitle] = useState("");
+import { updatePost } from "@/api/postApi";
+export default function EditPost({
+  children,
+  post,
+}: {
+  children: React.ReactNode;
+  post: Post;
+}) {
+  const [title, setTitle] = useState(post.title);
   const [image, setImage] = useState<File | null>(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(post.content);
   async function submitPost() {
-    createPost(title, image as File, content)
+    updatePost(post._id, title, image, content)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => {
-        throw new Error(err.message);
+        console.log(err);
       });
   }
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>New Post</Button>
+        <Button variant="ghost">{children}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-2xl">New Post</DialogTitle>
+          <DialogTitle className="text-2xl">Edit Post</DialogTitle>
         </DialogHeader>
         <div className="space-y-5">
           <div className="space-y-2">
@@ -42,6 +47,7 @@ export default function NewPost() {
               Title
             </Label>
             <Input
+              value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="text-lg"
               id="newPostTitle"
@@ -66,6 +72,7 @@ export default function NewPost() {
               Content
             </Label>
             <Textarea
+              value={content}
               onChange={(e) => setContent(e.target.value)}
               id="newPostContent"
               placeholder="Enter content of post"

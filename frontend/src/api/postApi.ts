@@ -26,7 +26,7 @@ export const getPost = (postId: string) => {
       throw new Error(err);
     });
 };
-export const createPost = (title: string, image: string, content: string) => {
+export const createPost = (title: string, image: File, content: string) => {
   const formData = new FormData();
   formData.append("title", title);
   formData.append("image", image);
@@ -43,6 +43,50 @@ export const createPost = (title: string, image: string, content: string) => {
           throw new Error(err.message);
         });
       }
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
+};
+export const updatePost = (
+  postId: string,
+  title: string,
+  image: File | null,
+  content: string
+) => {
+  console.log("IMAGE", image);
+
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("content", content);
+  if (image) {
+    formData.append("image", image);
+  }
+  return fetch(`http://localhost:8080/feed/post/edit/${postId}`, {
+    method: "PATCH",
+    body: formData,
+  })
+    .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
+
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+export const deletePost = (postId: string) => {
+  console.log(postId);
+
+  return fetch(`http://localhost:8080/feed/post/delete/${postId}`, {
+    method: "DELETE",
+  })
+    .then((res) => {
       return res.json();
     })
     .catch((err) => {
