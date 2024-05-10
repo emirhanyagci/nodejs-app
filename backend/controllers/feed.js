@@ -3,7 +3,12 @@ const fs = require("fs");
 const { validationResult } = require("express-validator");
 const Post = require("../models/post");
 exports.getPosts = (req, res, next) => {
+  const { page } = req.params || 1;
+  const perPage = 5;
+
   Post.find()
+    .skip((page - 1) * perPage)
+    .limit(perPage)
     .then((posts) => {
       res.json({
         posts,
@@ -30,6 +35,17 @@ exports.getPost = (req, res, next) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
+      next(err);
+    });
+};
+exports.getPostCount = (req, res, next) => {
+  Post.countDocuments()
+    .then((count) => {
+      res.json({
+        count,
+      });
+    })
+    .catch((err) => {
       next(err);
     });
 };

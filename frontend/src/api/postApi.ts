@@ -1,6 +1,6 @@
 import type { Post } from "@/types/post";
-export const getPosts = (): Promise<Post[]> => {
-  return fetch("http://localhost:8080/feed/posts")
+export const getPosts = (page: number): Promise<Post[]> => {
+  return fetch(`http://localhost:8080/feed/posts/${page}`)
     .then((res) => {
       if (res.status !== 200 && res.status !== 201) {
         throw new Error("Failed");
@@ -55,8 +55,6 @@ export const updatePost = (
   image: File | null,
   content: string
 ) => {
-  console.log("IMAGE", image);
-
   const formData = new FormData();
   formData.append("title", title);
   formData.append("content", content);
@@ -87,6 +85,25 @@ export const deletePost = (postId: string) => {
     method: "DELETE",
   })
     .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
+};
+export const getPostCount = () => {
+  return fetch("http://localhost:8080/feed/post/count")
+    .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
       return res.json();
     })
     .catch((err) => {
