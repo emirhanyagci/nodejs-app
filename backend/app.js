@@ -25,6 +25,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 const feedRoutes = require("./routes/feed");
+const authRoutes = require("./routes/auth");
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use((req, res, next) => {
@@ -37,11 +38,13 @@ app.use((req, res, next) => {
 
 app.use(multer({ storage, fileFilter }).single("image"));
 app.use("/feed", feedRoutes);
+app.use(authRoutes);
 app.use((error, req, res, next) => {
   const statusCode = error.statusCode;
   const message = error.message;
-  console.log(11, error);
-  res.status(statusCode).json({ message });
+  const data = error.data;
+
+  res.status(statusCode).json({ message, data });
 });
 mongoose
   .connect(
