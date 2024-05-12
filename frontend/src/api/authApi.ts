@@ -38,3 +38,21 @@ export const login = (email: string, password: string) => {
       throw new Error(err.message);
     });
 };
+
+export const reLogin = (token: string) => {
+  return fetch("http://localhost:8080/reLogin", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Could not re login");
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
+};

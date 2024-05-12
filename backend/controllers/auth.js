@@ -66,10 +66,14 @@ exports.login = (req, res, next) => {
         },
         "secret",
         {
-          expiresIn: "1h",
+          expiresIn: "3h",
         }
       );
-      res.json({ token, userId: fetchedUser._id.toString() });
+
+      res.json({
+        token,
+        user: { _id: fetchedUser._id.toString(), name: fetchedUser.name },
+      });
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -77,4 +81,26 @@ exports.login = (req, res, next) => {
       }
       next(err);
     });
+};
+// check user is login
+exports.reLogin = (req, res, next) => {
+  const token = req.get("Authorization").split(" ")[1];
+
+  console.log(token);
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, "secret");
+  } catch (err) {
+    err.statusCode = 500;
+    throw err;
+  }
+  if (!decodedToken) {
+    const error = new Error("Not authenticated");
+    error.statusCode = 401;
+    throw error;
+  }
+  console.log(decodedToken);
+  res
+    .status(201)
+    .json({ message: "User succesfully authed", userId: decodedToken.userId });
 };

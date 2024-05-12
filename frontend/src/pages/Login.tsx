@@ -21,8 +21,10 @@ export default function Login() {
   function loginHandler() {
     login(email, password)
       .then((res) => {
-        userContext?.setUser({
-          ...userContext?.user,
+        console.log(res);
+
+        userContext?.setUserHandler({
+          userId: res.user._id,
           isAuth: true,
           token: res.token,
         });
