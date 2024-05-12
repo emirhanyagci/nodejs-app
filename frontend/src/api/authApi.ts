@@ -1,4 +1,6 @@
 const baseUrl = "https://nodejs-app-one.vercel.app";
+//const baseUrl = "http://localhost:8080";
+
 export const signup = (email: string, name: string, password: string) => {
   const formData = new FormData();
   formData.append("email", email);

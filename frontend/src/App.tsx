@@ -12,6 +12,8 @@ function App() {
   const navigate = useNavigate();
   const userContext = useUserContext();
   useEffect(() => {
+    console.log("yep");
+
     if (!userContext?.user.isAuth) {
       const jwToken = localStorage.getItem("jwt") as string;
       if (!jwToken) {

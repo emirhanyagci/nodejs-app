@@ -11,13 +11,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signup } from "@/api/authApi";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   function signupHandler() {
     signup(email, name, password)
       .then((res) => {
+        navigate("/login");
         console.log(res);
       })
       .catch((err) => {

@@ -1,5 +1,6 @@
 import type { Post } from "@/types/post";
 const baseUrl = "https://nodejs-app-one.vercel.app";
+// const baseUrl = "http://localhost:8080";
 
 export const getPosts = (
   page: number,
@@ -51,7 +52,7 @@ export const createPost = (
   formData.append("content", content);
   console.log(formData);
 
-  return fetch("${baseUrl}/feed/post", {
+  return fetch(`${baseUrl}/feed/post`, {
     method: "POST",
     body: formData,
     headers: {
