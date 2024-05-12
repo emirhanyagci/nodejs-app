@@ -1,8 +1,10 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const path = require("path");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const helmet = require("helmet");
+const compression = require("compression");
 const app = express();
 
 const storage = multer.diskStorage({
@@ -39,6 +41,8 @@ app.use((req, res, next) => {
 app.use(multer({ storage, fileFilter }).single("image"));
 app.use("/feed", feedRoutes);
 app.use(authRoutes);
+app.use(helmet());
+app.use(compression());
 app.use((error, req, res, next) => {
   const statusCode = error.statusCode;
   const message = error.message;

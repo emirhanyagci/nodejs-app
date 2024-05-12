@@ -12,8 +12,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </BrowserRouter>
 );
 // add validate frontend side
-// add view for post
+// add status section
 // add spinner
-// re fetch after post
-// MAKE SYNC POSTS AFTER CRUD
-//  add navigater after login,signup

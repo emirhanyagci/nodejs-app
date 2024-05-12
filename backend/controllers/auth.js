@@ -84,6 +84,7 @@ exports.login = (req, res, next) => {
 };
 // check user is login
 exports.reLogin = (req, res, next) => {
+  console.log("handled");
   const token = req.get("Authorization").split(" ")[1];
 
   console.log(token);
