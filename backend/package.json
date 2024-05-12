@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon --env-file=.env app.js"
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
