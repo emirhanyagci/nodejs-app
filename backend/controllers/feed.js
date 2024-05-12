@@ -53,7 +53,6 @@ exports.getPostCount = (req, res, next) => {
     });
 };
 exports.createPost = (req, res, next) => {
-  console.log("LOL?");
   const error = validationResult(req);
   if (!error.isEmpty()) {
     console.log(error);

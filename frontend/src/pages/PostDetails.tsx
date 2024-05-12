@@ -20,7 +20,7 @@ export default function PostDetails() {
 
         setPost({
           ...res.post,
-          imageUrl: "http://localhost:8080/" + res.post.imageUrl,
+          imageUrl: `${import.meta.env.VITE_URL}/${res.post.imageUrl}`,
         });
       })
       .catch((err) => {
