@@ -15,14 +15,21 @@ import { Button } from "@/components/ui/button";
 import { createPost } from "../api/postApi";
 import { useState } from "react";
 import { useUserContext } from "@/context/UserContext";
-export default function NewPost() {
+export default function NewPost({ setPosts }: { setPosts: any }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [content, setContent] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const userContext = useUserContext();
   async function submitPost() {
     createPost(title, image as File, content, userContext?.user.token)
       .then((res) => {
+        setPosts((oldPosts: any) => {
+          console.log(res);
+          setDialogOpen(false);
+          return [...oldPosts, res.post];
+        });
         console.log(res);
       })
       .catch((err) => {
@@ -30,7 +37,7 @@ export default function NewPost() {
       });
   }
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button>New Post</Button>
       </DialogTrigger>

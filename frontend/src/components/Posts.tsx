@@ -5,6 +5,7 @@ import type { Post } from "@/types/post";
 
 import { useSearchParams } from "react-router-dom";
 import { useUserContext } from "@/context/UserContext";
+import NewPost from "./NewPost";
 
 export default function Posts() {
   const [posts, setPosts] = useState<Post[]>();
@@ -26,11 +27,16 @@ export default function Posts() {
   }, [searchParams]);
 
   return (
-    <div className="w-full space-y-5">
-      {posts?.map((post) => {
-        return <PostItem key={post._id} post={post} />;
-      })}
-    </div>
+    <section className="w-full space-y-5 ">
+      <div className="flex justify-center">
+        <NewPost setPosts={setPosts} />
+      </div>
+      <div className="space-y-5">
+        {posts?.map((post) => {
+          return <PostItem key={post._id} post={post} setPosts={setPosts} />;
+        })}
+      </div>
+    </section>
   );
 }
 // calc count of the posts

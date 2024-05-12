@@ -25,6 +25,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     token: string;
     isAuth: boolean;
   }) {
+    logoutHandler();
     localStorage.setItem("jwt", token);
     setUser({ ...user, userId, token, isAuth });
   }

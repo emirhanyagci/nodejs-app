@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Card,
   CardDescription,
@@ -12,15 +13,28 @@ import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost";
 import { deletePost } from "@/api/postApi";
 import { useUserContext } from "@/context/UserContext";
-export default function PostItem({ post }: { post: Post }) {
+export default function PostItem({
+  post,
+  setPosts,
+}: {
+  post: Post;
+  setPosts: any;
+}) {
   console.log(post);
 
   const navigate = useNavigate();
   const userContext = useUserContext();
+  const creatorId = post.creator._id;
+  const userId = userContext?.user.userId;
   function deleteHandler() {
     deletePost(post._id, userContext?.user.token)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        setPosts((oldPosts: any) => {
+          const newPosts = oldPosts.filter(
+            (item: Post) => item._id !== post._id
+          );
+          return newPosts;
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -45,11 +59,16 @@ export default function PostItem({ post }: { post: Post }) {
           >
             View
           </Button>
-          <EditPost post={post}>Edit</EditPost>
-
-          <Button variant="destructive" onClick={deleteHandler}>
-            Delete
-          </Button>
+          {userId === creatorId && (
+            <>
+              <EditPost setPosts={setPosts} post={post}>
+                Edit
+              </EditPost>
+              <Button variant="destructive" onClick={deleteHandler}>
+                Delete
+              </Button>
+            </>
+          )}
         </div>
       </CardFooter>
     </Card>

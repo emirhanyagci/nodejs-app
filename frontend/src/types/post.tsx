@@ -3,6 +3,6 @@ export interface Post {
   title: string;
   content: string;
   imageUrl: string;
-  creator: { name: string };
+  creator: { _id: string; name: string };
   createdAt: Date;
 }

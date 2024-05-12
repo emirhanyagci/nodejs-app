@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Dialog,
   DialogContent,
@@ -17,25 +18,36 @@ import { useUserContext } from "@/context/UserContext";
 export default function EditPost({
   children,
   post,
+  setPosts,
 }: {
   children: React.ReactNode;
   post: Post;
+  setPosts: any;
 }) {
   const [title, setTitle] = useState(post.title);
   const [image, setImage] = useState<File | null>(null);
   const [content, setContent] = useState(post.content);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const userContext = useUserContext();
   async function submitPost() {
     updatePost(post._id, title, image, content, userContext?.user.token)
       .then((res) => {
-        console.log(res);
+        setPosts((oldPosts: any) => {
+          const updatedPost = oldPosts.map((item: Post) => {
+            if (item._id !== res.post._id) return item;
+            return res.post;
+          });
+          return updatedPost;
+        });
+        setDialogOpen(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost">{children}</Button>
       </DialogTrigger>
