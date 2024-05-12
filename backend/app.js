@@ -56,13 +56,12 @@ app.use((error, req, res, next) => {
 
   res.status(statusCode).json({ message, data });
 });
+
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.9thafap.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0`
   )
   .then(() => {
-    console.log(process.env.MONGODB_USERNAME);
-
     app.listen(8080);
   })
   .catch((err) => {});

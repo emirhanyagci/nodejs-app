@@ -1,9 +1,10 @@
+const baseUrl = "https://nodejs-app-one.vercel.app";
 export const signup = (email: string, name: string, password: string) => {
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
   formData.append("name", name);
-  return fetch("http://localhost:8080/signup", {
+  return fetch(`${baseUrl}/signup`, {
     method: "POST",
     body: formData,
   })
@@ -24,7 +25,7 @@ export const login = (email: string, password: string) => {
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
-  return fetch("http://localhost:8080/login", {
+  return fetch(`${baseUrl}/login`, {
     method: "POST",
     body: formData,
   })
@@ -40,7 +41,7 @@ export const login = (email: string, password: string) => {
 };
 
 export const reLogin = (token: string) => {
-  return fetch("http://localhost:8080/reLogin", {
+  return fetch(`${baseUrl}/reLogin`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,

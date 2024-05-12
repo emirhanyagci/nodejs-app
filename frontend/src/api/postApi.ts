@@ -1,9 +1,11 @@
 import type { Post } from "@/types/post";
+const baseUrl = "https://nodejs-app-one.vercel.app";
+
 export const getPosts = (
   page: number,
   token: string | undefined
 ): Promise<Post[]> => {
-  return fetch(`http://localhost:8080/feed/posts/${page}`, {
+  return fetch(`${baseUrl}/feed/posts/${page}`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -19,7 +21,7 @@ export const getPosts = (
     });
 };
 export const getPost = (postId: string, token: string | undefined) => {
-  return fetch(`http://localhost:8080/feed/post/${postId}`, {
+  return fetch(`${baseUrl}/feed/post/${postId}`, {
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -49,7 +51,7 @@ export const createPost = (
   formData.append("content", content);
   console.log(formData);
 
-  return fetch("http://localhost:8080/feed/post", {
+  return fetch("${baseUrl}/feed/post", {
     method: "POST",
     body: formData,
     headers: {
@@ -81,7 +83,7 @@ export const updatePost = (
   if (image) {
     formData.append("image", image);
   }
-  return fetch(`http://localhost:8080/feed/post/edit/${postId}`, {
+  return fetch(`${baseUrl}/feed/post/edit/${postId}`, {
     method: "PATCH",
     body: formData,
     headers: {
@@ -104,7 +106,7 @@ export const updatePost = (
 export const deletePost = (postId: string, token: string | undefined) => {
   console.log(postId);
 
-  return fetch(`http://localhost:8080/feed/post/delete/${postId}`, {
+  return fetch(`${baseUrl}/feed/post/delete/${postId}`, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,
@@ -123,7 +125,7 @@ export const deletePost = (postId: string, token: string | undefined) => {
     });
 };
 export const getPostCount = (token: string | undefined) => {
-  return fetch("http://localhost:8080/feed/post/count", {
+  return fetch(`${baseUrl}/feed/post/count`, {
     headers: {
       Authorization: "Bearer " + token,
     },
