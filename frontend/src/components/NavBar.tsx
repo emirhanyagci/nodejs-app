@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../context/UserContext";
+import { useUserContext } from "../context/UserContext";
 export default function NavBar() {
   const userContext = useUserContext();
   const isAuth = userContext?.user.isAuth;

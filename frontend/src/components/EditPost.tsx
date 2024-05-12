@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import type { Post } from "@/types/post";
 import { useState } from "react";
 import { updatePost } from "@/api/postApi";
+import { useUserContext } from "@/context/UserContext";
 export default function EditPost({
   children,
   post,
@@ -23,8 +24,9 @@ export default function EditPost({
   const [title, setTitle] = useState(post.title);
   const [image, setImage] = useState<File | null>(null);
   const [content, setContent] = useState(post.content);
+  const userContext = useUserContext();
   async function submitPost() {
-    updatePost(post._id, title, image, content)
+    updatePost(post._id, title, image, content, userContext?.user.token)
       .then((res) => {
         console.log(res);
       })

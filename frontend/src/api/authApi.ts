@@ -20,3 +20,21 @@ export const signup = (email: string, name: string, password: string) => {
       throw new Error(err.message);
     });
 };
+export const login = (email: string, password: string) => {
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+  return fetch("http://localhost:8080/login", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => {
+      if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Login failed");
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
+};

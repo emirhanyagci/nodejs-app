@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import { getPost } from "../api/postApi";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Post } from "../types/post";
+import { useUserContext } from "@/context/UserContext";
 export default function PostDetails() {
   const [post, setPost] = useState<Post | null>();
   const { postId } = useParams();
   const navigate = useNavigate();
+  const userContext = useUserContext();
   if (!postId) {
     navigate("/");
   }
   useEffect(() => {
-    getPost(postId as string)
+    getPost(postId as string, userContext?.user.token)
       .then((res) => {
         console.log(res);
 

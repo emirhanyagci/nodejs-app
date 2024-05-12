@@ -11,10 +11,14 @@ import type { Post } from "@/types/post";
 import { useNavigate } from "react-router-dom";
 import EditPost from "./EditPost";
 import { deletePost } from "@/api/postApi";
+import { useUserContext } from "@/context/UserContext";
 export default function PostItem({ post }: { post: Post }) {
+  console.log(post);
+
   const navigate = useNavigate();
+  const userContext = useUserContext();
   function deleteHandler() {
-    deletePost(post._id)
+    deletePost(post._id, userContext?.user.token)
       .then((res) => {
         console.log(res);
       })

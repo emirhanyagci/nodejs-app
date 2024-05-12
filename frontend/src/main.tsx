@@ -9,3 +9,4 @@ ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
 // add spinner
 // re fetch after post
 // MAKE SYNC POSTS AFTER CRUD
+//  add navigater after login,signup

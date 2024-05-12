@@ -9,8 +9,7 @@ const validateAuth = [
       if (user) {
         throw new Error("E-Mail address already exist");
       }
-    })
-    .normalizeEmail(),
+    }),
   body("password").trim().isLength({ min: 5 }),
   body("name").trim().not().isEmpty(),
 ];

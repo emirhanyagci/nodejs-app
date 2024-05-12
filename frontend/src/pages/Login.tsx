@@ -9,7 +9,29 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { login } from "../api/authApi";
+import { useState } from "react";
+import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const userContext = useUserContext();
+  const navigate = useNavigate();
+  function loginHandler() {
+    login(email, password)
+      .then((res) => {
+        userContext?.setUser({
+          ...userContext?.user,
+          isAuth: true,
+          token: res.token,
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div className="flex justify-center">
       <Card className="w-full max-w-sm">
@@ -23,6 +45,7 @@ export default function Login() {
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
               type="email"
               placeholder="m@example.com"
@@ -31,11 +54,18 @@ export default function Login() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              id="password"
+              type="password"
+              required
+            />
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">Sign in</Button>
+          <Button onClick={loginHandler} className="w-full">
+            Sign in
+          </Button>
         </CardFooter>
       </Card>
     </div>

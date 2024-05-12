@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PostDetails from "./pages/PostDetails";
-import { UserProvider } from "../context/UserContext";
+import { UserProvider } from "./context/UserContext";
 function App() {
   return (
     <BrowserRouter>

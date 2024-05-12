@@ -4,18 +4,25 @@ import { getPosts } from "@/api/postApi";
 import type { Post } from "@/types/post";
 
 import { useSearchParams } from "react-router-dom";
+import { useUserContext } from "@/context/UserContext";
 
 export default function Posts() {
   const [posts, setPosts] = useState<Post[]>();
   const [searchParams] = useSearchParams();
-
+  const userContext = useUserContext();
+  const token = userContext?.user.token;
   useEffect(() => {
     const page = searchParams.get("page") || 1;
-    getPosts(+page).then((posts) => {
-      console.log(posts);
 
-      setPosts(posts);
-    });
+    getPosts(+page, token)
+      .then((posts) => {
+        console.log(posts);
+
+        setPosts(posts);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [searchParams]);
 
   return (

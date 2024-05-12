@@ -14,12 +14,14 @@ import { Button } from "@/components/ui/button";
 
 import { createPost } from "../api/postApi";
 import { useState } from "react";
+import { useUserContext } from "@/context/UserContext";
 export default function NewPost() {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [content, setContent] = useState("");
+  const userContext = useUserContext();
   async function submitPost() {
-    createPost(title, image as File, content)
+    createPost(title, image as File, content, userContext?.user.token)
       .then((res) => {
         console.log(res);
       })

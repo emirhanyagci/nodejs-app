@@ -2,6 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const { validationResult } = require("express-validator");
 const Post = require("../models/post");
+const User = require("../models/user");
+const user = require("../models/user");
 exports.getPosts = (req, res, next) => {
   const { page } = req.params || 1;
   const perPage = 5;
@@ -9,11 +11,11 @@ exports.getPosts = (req, res, next) => {
   Post.find()
     .skip((page - 1) * perPage)
     .limit(perPage)
+    .populate("creator")
     .then((posts) => {
       res.json({
         posts,
       });
-      console.log(posts);
     })
     .catch((err) => {
       if (!err.statusCode) {
@@ -25,6 +27,7 @@ exports.getPosts = (req, res, next) => {
 exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   Post.findById(postId)
+    .populate("creator")
     .then((post) => {
       res.status(201).json({
         message: "succsefully fetched single post",
@@ -70,17 +73,22 @@ exports.createPost = (req, res, next) => {
     title,
     imageUrl,
     content,
-    creator: {
-      name: "Emirhan",
-    },
+    creator: req.userId,
   });
   post
     .save()
-    .then((result) => {
-      console.log(result);
+    .then(() => {
+      return User.findById(req.userId);
+    })
+    .then((user) => {
+      user.posts.push(post);
+      return user.save();
+    })
+    .then((user) => {
       res.status(201).json({
         message: "Post succesfully createt",
-        post: result,
+        post: post,
+        creator: { _id: user._id, name: user.name },
       });
     })
     .catch((err) => {
@@ -111,11 +119,22 @@ exports.updatePost = (req, res, next) => {
     updatedPost = { ...updatedPost, imageUrl: req.file.path };
   }
   Post.findByIdAndUpdate(postId, updatedPost, { new: true })
-    .then((result) => {
-      console.log(result);
+    .then((post) => {
+      if (!post) {
+        const error = new Error("Could not find post.");
+        error.statusCode = 404;
+        throw error;
+      }
+      console.log(post.creator.toString());
+      console.log(req.userId);
+      if (post.creator.toString() !== req.userId) {
+        const error = new Error("Not authhorized");
+        error.statusCode = 403;
+        throw error;
+      }
       res.status(201).json({
         message: "updated succesfully done",
-        post: result,
+        post: post,
       });
     })
     .catch((err) => {
@@ -134,8 +153,20 @@ exports.deletePost = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
+      if (post.creator.toString() !== req.userId) {
+        const error = new Error("Not authhorized");
+        error.statusCode = 403;
+        throw error;
+      }
       clearImage(post.imageUrl);
-      return Post.findByIdAndDelete(postId).then(() => {});
+      return Post.findByIdAndDelete(postId);
+    })
+    .then(() => {
+      return User.findById(req.userId);
+    })
+    .then((user) => {
+      user.posts.pull(postId);
+      user.save();
     })
     .then(() => {
       res.json({ message: "Post deleted" });
