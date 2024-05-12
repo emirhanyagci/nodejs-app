@@ -28,6 +28,12 @@ const fileFilter = (req, file, cb) => {
 };
 const feedRoutes = require("./routes/feed");
 const authRoutes = require("./routes/auth");
+app.get("/test/api", (req, res, next) => {
+  res.json({
+    message: "API WORKING CORRECTLY",
+  });
+});
+
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use((req, res, next) => {
