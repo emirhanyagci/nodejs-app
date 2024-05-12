@@ -28,6 +28,7 @@ const fileFilter = (req, file, cb) => {
 };
 const feedRoutes = require("./routes/feed");
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 app.get("/test/api", (req, res, next) => {
   res.json({
     message: "API WORKING CORRECTLY",
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 
 app.use(multer({ storage, fileFilter }).single("image"));
 app.use("/feed", feedRoutes);
+app.use("/user", userRoutes);
 app.use(authRoutes);
 app.use(helmet());
 app.use(compression());

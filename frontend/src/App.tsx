@@ -12,8 +12,6 @@ function App() {
   const navigate = useNavigate();
   const userContext = useUserContext();
   useEffect(() => {
-    console.log("yep");
-
     if (!userContext?.user.isAuth) {
       const jwToken = localStorage.getItem("jwt") as string;
       if (!jwToken) {
@@ -26,12 +24,14 @@ function App() {
             token: jwToken,
             isAuth: true,
           });
+          navigate("/");
         })
         .catch(() => {
           return navigate("/login");
         });
     }
   }, [userContext?.user.isAuth]);
+  console.log(userContext?.user.isAuth);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

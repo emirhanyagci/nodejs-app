@@ -16,4 +16,5 @@ router.get("/post/:postId", isAuth, getPost);
 router.post("/post", isAuth, validatePost, createPost);
 router.patch("/post/edit/:postId", isAuth, validatePost, updatePost);
 router.delete("/post/delete/:postId", isAuth, deletePost);
+
 module.exports = router;

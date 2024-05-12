@@ -28,7 +28,7 @@ export const getPost = (postId: string, token: string | undefined) => {
   })
     .then((res) => {
       if (res.status !== 200 && res.status !== 201) {
-        res.json().then((err) => {
+        return res.json().then((err) => {
           throw new Error(err.message);
         });
       }
@@ -91,7 +91,7 @@ export const updatePost = (
   })
     .then((res) => {
       if (res.status !== 200 && res.status !== 201) {
-        res.json().then((err) => {
+        return res.json().then((err) => {
           throw new Error(err.message);
         });
       }
@@ -113,7 +113,7 @@ export const deletePost = (postId: string, token: string | undefined) => {
   })
     .then((res) => {
       if (res.status !== 200 && res.status !== 201) {
-        res.json().then((err) => {
+        return res.json().then((err) => {
           throw new Error(err.message);
         });
       }
